@@ -21,6 +21,7 @@ This is the resulting file structure in `vendor/`
 ```
 path/to/my/repo
 --- vendor/
+------ vendor.sh
 ------ golang.org -> src/golang.org (symlink)
 ------ src/
 --------- golang.org/x/tools/cmd/goimports
