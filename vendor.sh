@@ -1,6 +1,4 @@
 #!/bin/bash
-#
-# Managing Go vendor libraries.  Use thi.
 
 VENDOR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
