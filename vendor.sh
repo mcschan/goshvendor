@@ -12,6 +12,20 @@ function vendor_package {
     echo "Restore all .checkout_git to .git for all dirs in $VENDOR"
     find $VENDOR -type d -name .checkout_git | xargs -n1 -I DIR mv -v "DIR" "DIR/../.git"
 
+    echo "Move vendor files back into src/"
+    mkdir $VENDOR/src
+
+    for f in $VENDOR/*;
+    do
+        [ -d "${f}" ] || continue # if not a directory, skip
+        DIR_NAME=${f##*/}
+        [ "$DIR_NAME" != "src" ] || continue # if directory is src
+        [ "$DIR_NAME" != "pkg" ] || continue # if directory is pkg
+        [ "$DIR_NAME" != "bin" ] || continue # if directory is bin
+
+        mv $VENDOR/$DIR_NAME $VENDOR/src
+    done;
+
     echo "Go get $PKG"
     go get -u -v $PKG
 
@@ -21,15 +35,11 @@ function vendor_package {
     echo "Restore GOPATH back to $ORIGINAL_GOPATH"
     export GOPATH=$ORIGINAL_GOPATH
 
-    for f in $VENDOR/src/*;
-    do
-        [ -d "${f}" ] || continue # if not a directory, skip
-        DIR_NAME=${f##*/}
-        [ ! -e $VENDOR/$DIR_NAME ] || continue # if directory exists, skip
-
-        echo "Symlink $f to $VENDOR/$DIR_NAME"
-        ln -s $f $VENDOR/$DIR_NAME
-    done;
+    echo "Move vendor files out of the $VENDOR/src/ folder and delete the $VENDOR/src|pkg|bin/ folder"
+    mv $VENDOR/src/* $VENDOR/
+    rm -rf $VENDOR/src
+    rm -rf $VENDOR/pkg
+    rm -rf $VENDOR/bin
 
     echo "Done!"
 }

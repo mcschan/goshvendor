@@ -22,11 +22,7 @@ This is the resulting file structure in `vendor/`
 path/to/my/repo
 --- vendor/
 ------ vendor.sh
------- golang.org -> src/golang.org (symlink)
------- src/
---------- golang.org/x/tools/cmd/goimports
------- pkg/
---------- ...
+------ golang.org/x/tools/cmd/goimports
 ```
 
 # How it works
@@ -34,4 +30,4 @@ path/to/my/repo
 2. Rename the `.checkout_git` directories to `.git`
 3. Go get the package
 4. Rename the `.git` directories back to `.checkout_git`
-5. Create a symlink to the directory of the library
+5. Move the files out of vendor/src/ into the vendor/ directory
